@@ -1,6 +1,5 @@
-
 # Install packages
-sudo yum -y install java-1.8.0-openjdk.x86_64 git gcc python3 python3-devel
+sudo yum -y install java-1.8.0-openjdk.x86_64 java-1.8.0-openjdk-devel git gcc python3 python3-devel
 sudo amazon-linux-extras install nginx1.12 -y
 
 cd $HOME
@@ -25,10 +24,10 @@ cp $HOME/.bash_profile $HOME/.bash_profile_bak
 #### Configure $HOME/.bash_profile to set the appropriate environmental variables
 
 # Add maven to PATH
-echo "export PATH=\$PATH:/home/ec2-user/apache-maven-3.6.0/bin" >> $HOME/.bash_profile
+echo "export PATH=\$PATH:$HOME/apache-maven-3.6.0/bin" >> $HOME/.bash_profile
 
 # Set SPARK_HOME
-echo "export SPARK_HOME=/home/$USER/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8" >> $HOME/.bash_profile
+echo "export SPARK_HOME=$HOME/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8" >> $HOME/.bash_profile
 
 ## Get the new env variables
 source $HOME/.bash_profile
@@ -58,6 +57,18 @@ echo "export PATH=${SPARK_HOME}/bin:$PATH:~/.local/bin:$JAVA_HOME/bin:$JAVA_HOME
 # Pull in the new environment settings
 source $HOME/.bash_profile
 
+# Setup Glue Libraries and modify glue setup file
+cd $HOME/aws-glue-libs
+chmod a+x ./bin/glue-setup.sh
+./bin/glue-setup.sh
+## Modify the glue-setup to stop downloading jar files
+sed -i "s/mvn -f/#mvn -f/" ./bin/glue-setup.sh 
+
+# Remove wrong version of netty-all-*.jar
+rm $HOME/aws-glue-libs/jarsv1/netty-all-4.0.23.Final.jar
+cp $SPARK_HOME/jars/netty-all-4.1.17.Final.jar $HOME/aws-glue-libs/jarsv1
+# Remove an additional javax.servlet that cause dependency problem
+rm $HOME/aws-glue-libs/jarsv1/javax.servlet-3.0.0.v201112011016.jar
 
 # Upgrade pip
 sudo pip3 install pip --upgrade
