@@ -1,4 +1,4 @@
-# glue_local_env_with_jupyter
+# Creating a Jupyter Notebook environment for running AWS Glue ETL scripts locally on an AWS EC2 Instance
 A local development environment to run AWS Glue ETL scripts with Jupyter Notebook
 
 ## WORK IN PROGRESS
