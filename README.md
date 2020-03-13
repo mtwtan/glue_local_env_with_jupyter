@@ -23,6 +23,10 @@ $ ./note_book
 
 ### Set up 
 
+### Set up Jupyter Notebook Password
+```
+$ jupyter notebook password
+```
 ### To start up Jupyter notebook
 ```
 $ cd ~
