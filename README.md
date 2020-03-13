@@ -11,10 +11,18 @@ A local development environment to run AWS Glue ETL scripts with a Jupyter Noteb
 ## Manual Steps
 
 ### Set up IAM Roles
-- Create an IAM Role with the following IAM policies:
-
+- Create an IAM EC2 Role with the following IAM policies:
+  - Select AWSGlueServiceNotebookRole 
+  - Select or create inline policy to read and write to the appropriate S3 buckets
 
 ### Set up Security Groups
+- Create a Security Group for the Application Load Balancer (ALB):
+
+Type | Protocol | Port range | Source
+---- | -------- | ---------- | ------ 
+HTTPS | TCP | 443 | X.X.X.X/X
+  
+  
 
 ### Set up 
 
