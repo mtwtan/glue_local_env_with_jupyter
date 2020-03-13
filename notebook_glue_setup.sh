@@ -72,6 +72,10 @@ jupyter nbextension install --py githubcommit --user
 jupyter nbextension enable --py githubcommit
 jupyter notebook --generate-config
 
+# Add Jupyter configuration
+echo "c.NotebookApp.allow_remote_access = True" >> $HOME/.jupyter/jupyter_notebook_config.py
+echo "c.NotebookApp.port = 8000" >> $HOME/.jupyter/jupyter_notebook_config.py
+
 # Modify NGINX configuration
 sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 sudo cp ~/glue_local_env_with_jupyter/nginx.conf /etc/nginx/nginx.conf
