@@ -10,6 +10,14 @@ A local development environment to run AWS Glue ETL scripts with a Jupyter Noteb
 
 ## Manual Steps
 
+### Set up IAM Roles
+- Create an IAM Role with the following IAM policies:
+
+
+### Set up Security Groups
+
+### Set up 
+
 ### Launch EC2 instances
 - Launch M5.large or larger
 - Download this git project to /home/ec2-user
@@ -22,12 +30,6 @@ $ cd glue_local_env_with_jupyter
 $ chmod a+x notebook_glue_setup.sh
 $ ./note_book
 ```
-
-### Set up 
-
-### Set up Security Groups
-
-### Set up 
 
 ### Set up Jupyter Notebook Password
 ```
