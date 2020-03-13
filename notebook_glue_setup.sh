@@ -1,6 +1,6 @@
 # Install packages
 sudo yum -y install java-1.8.0-openjdk.x86_64 git gcc python3 python3-devel
-sudo amazon-linux-extras install nginx1.12
+sudo amazon-linux-extras install nginx1.12 -y
 
 cd ~
 
