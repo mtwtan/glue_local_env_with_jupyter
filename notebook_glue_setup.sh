@@ -47,7 +47,7 @@ echo "alias python=python3" >> $HOME/.bash_profile
 
 # Configuration setting for PYSPARK
 echo "export SPARK_CONF_DIR=$HOME/aws-glue-libs/conf" >> $HOME/.bash_profile
-echo "export PYTHONPATH=\"${SPARK_HOME}/python/:${SPARK_HOME}/python/lib/py4j-0.10.7-src.zip:$HOME/aws-glue-libs/PyGlue.zip:${PYTHONPATH}\"" >> $HOME/.bash_profile
+echo "export PYTHONPATH=\"${SPARK_HOME}/python/:${SPARK_HOME}/python/lib/py4j-0.10.7-src.zip:$HOME/aws-glue-libs/PyGlue.zip\"" >> $HOME/.bash_profile
 
 echo "export PYSPARK_DRIVER_PYTHON=\"jupyter\"" >> $HOME/.bash_profile
 echo "export PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\"" >> $HOME/.bash_profile
