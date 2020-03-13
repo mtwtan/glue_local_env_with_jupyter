@@ -39,7 +39,16 @@ echo "export JAVA_HOME=$jvmhome" >> .bash_profile
 # Set python3 as default python language
 echo "alias python=python3" >> .bash_profile
 
+# Configuration setting for PYSPARK
+echo "export SPARK_CONF_DIR=$HOME/aws-glue-libs/conf" >> .bash_profile
+echo "export PYTHONPATH=\"${SPARK_HOME}python/:${SPARK_HOME}python/lib/py4j-0.10.7-src.zip:$HOME/bin/aws-glue-libs/PyGlue.zip:${PYTHONPATH}\"" >> .bash_profile
 
+echo "export PYSPARK_DRIVER_PYTHON=\"jupyter\"" >> .bash_profile
+echo "export PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\"" >> .bash_profile
+echo "export PYSPARK_PYTHON=python3" >> .bash_profile
+echo "export PATH=${SPARK_HOME}bin:$PATH:~/.local/bin:$JAVA_HOME/bin:$JAVA_HOME/jre/bin" >> .bash_profile
+
+# Pull in the new environment settings
 source .bash_profile
 
 
