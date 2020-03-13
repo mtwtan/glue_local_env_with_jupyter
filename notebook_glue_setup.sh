@@ -70,6 +70,7 @@ pip install requests
 jupyter serverextension enable --py githubcommit
 jupyter nbextension install --py githubcommit --user
 jupyter nbextension enable --py githubcommit
+jupyter notebook --generate-config
 
 # Modify NGINX configuration
 sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
