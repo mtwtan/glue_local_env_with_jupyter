@@ -29,12 +29,18 @@ echo "PATH=\$PATH:/home/ec2-user/apache-maven-3.6.0/bin" >> $HOME/.bash_profile
 # Set SPARK_HOME
 echo "export SPARK_HOME=/home/$USER/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8" >> $HOME/.bash_profile
 
+## Get the new env variables
+source $HOME/.bash_profile
+
 # Set JAVA_HOME
 ####java=$(alternatives --display java | grep "link currently points to")
 java=$(alternatives --display java | grep link | sed 's/^ link.*to //')
 java2=$(echo $java | sed 's/link currently points to //')
 jvmhome=$(echo $java2 | sed 's/\/bin\/java//')
 echo "export JAVA_HOME=$jvmhome" >> $HOME/.bash_profile
+
+## Get the new env variables
+source $HOME/.bash_profile
 
 # Set python3 as default python language
 echo "alias python=python3" >> $HOME/.bash_profile
