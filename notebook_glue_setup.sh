@@ -24,7 +24,7 @@ cp $HOME/.bash_profile $HOME/.bash_profile_bak
 #### Configure $HOME/.bash_profile to set the appropriate environmental variables
 
 # Add maven to PATH
-echo "PATH=\$PATH:/home/ec2-user/apache-maven-3.6.0/bin" >> $HOME/.bash_profile
+echo "export PATH=\$PATH:/home/ec2-user/apache-maven-3.6.0/bin" >> $HOME/.bash_profile
 
 # Set SPARK_HOME
 echo "export SPARK_HOME=/home/$USER/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8" >> $HOME/.bash_profile
@@ -47,12 +47,12 @@ echo "alias python=python3" >> $HOME/.bash_profile
 
 # Configuration setting for PYSPARK
 echo "export SPARK_CONF_DIR=$HOME/aws-glue-libs/conf" >> $HOME/.bash_profile
-echo "export PYTHONPATH=\"${SPARK_HOME}python/:${SPARK_HOME}python/lib/py4j-0.10.7-src.zip:$HOME/bin/aws-glue-libs/PyGlue.zip:${PYTHONPATH}\"" >> $HOME/.bash_profile
+echo "export PYTHONPATH=\"${SPARK_HOME}/python/:${SPARK_HOME}/python/lib/py4j-0.10.7-src.zip:$HOME/bin/aws-glue-libs/PyGlue.zip:${PYTHONPATH}\"" >> $HOME/.bash_profile
 
 echo "export PYSPARK_DRIVER_PYTHON=\"jupyter\"" >> $HOME/.bash_profile
 echo "export PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\"" >> $HOME/.bash_profile
 echo "export PYSPARK_PYTHON=python3" >> $HOME/.bash_profile
-echo "export PATH=${SPARK_HOME}bin:$PATH:~/.local/bin:$JAVA_HOME/bin:$JAVA_HOME/jre/bin" >> $HOME/.bash_profile
+echo "export PATH=${SPARK_HOME}/bin:$PATH:~/.local/bin:$JAVA_HOME/bin:$JAVA_HOME/jre/bin" >> $HOME/.bash_profile
 
 # Pull in the new environment settings
 source $HOME/.bash_profile
