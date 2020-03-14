@@ -16,13 +16,19 @@ A local development environment to run AWS Glue ETL scripts with a Jupyter Noteb
   - Select or create inline policy to read and write to the appropriate S3 buckets
 
 ### Set up Security Groups
-- Create a Security Group for the Application Load Balancer (ALB):
+- Create a Security Group for the Application Load Balancer (ALB). The appropriate Source IP range should be appropriate to your environment:
 
 Type | Protocol | Port range | Source
 ---- | -------- | ---------- | ------ 
 HTTPS | TCP | 443 | X.X.X.X/X
-  
-  
+
+  - Copy the Security Group ID: sg-XXXXXXXXXXXXXXXXX 
+- Create a Security Group for the EC2 instance
+
+Type | Protocol | Port range | Source
+---- | -------- | ---------- | ------ 
+HTTP | TCP | 80 | sg-XXXXXXXXXXXXXXXXX 
+SSH | TCP | 22 | X.X.X.X/X
 
 ### Set up 
 
