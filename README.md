@@ -47,7 +47,7 @@ $ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
 ```
 $ cd glue_local_env_with_jupyter
 $ chmod a+x notebook_glue_setup.sh
-$ ./note_book
+$ ./notebook_glue_setup.sh
 ```
 
 ### Set up Jupyter Notebook Password
