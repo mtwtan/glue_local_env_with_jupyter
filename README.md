@@ -34,11 +34,17 @@ SSH | TCP | 22 | X.X.X.X/X
 ### Launch EC2 instances
 - Launch M5.large or larger
 - Download this git project to /home/ec2-user
+- Install git and clone repository to $HOME directory
+
+```
+$ yum -y install git
+$ cd /home/ec2-user
+$ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
+```
+
 - Run notebook_glue_setup.sh
 
 ```
-$ cd /home/ec2-user
-$ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
 $ cd glue_local_env_with_jupyter
 $ chmod a+x notebook_glue_setup.sh
 $ ./note_book
