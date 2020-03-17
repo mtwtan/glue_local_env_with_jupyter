@@ -92,10 +92,48 @@ $ nohup pysparkl &
 - Clone the repository
 - Build the docker image or download from Docker Hub
 - Run the docker container with the specifications as listed below
+
+##### Build your own docker image
 ```
 $ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
 $ ls -l   ## Verify that you have the Dockerfile
-$
+```
+##### (option 1) Build your own docker image
+```
+$ docker build -t <repository>/<image name>:<tag> .   ## Note the period at the end of the command
+###  Docker build will take quite a long time. This image is quite big.
+```
+##### (option 2) Pull from Docker Hub
+```
+$ docker pull matthewtan/jupyterglue:latest
+```
+##### Run the docker image
+```
+$ docker run -v <folder location of your AWS credentials>/.aws:/home/glue/.aws -v <folder location of your python notebook files>:/home/glue/notebook -p 8000:8000 --rm -it <repository>/<image name>:<tag>
+
+### Example
+
+$ docker run -v ~/glue/.aws:/home/glue/.aws -v ~/glue_notebooks:/home/glue/notebook -p 8000:8000 --rm -it matthewtan/jupyterglue:latest
+
+[glue@864f6dac7803 ~]$ pwd 
+/home/glue
+[glue@864f6dac7803 ~]$ cd notebook
+[glue@864f6dac7803 notebook]$ pyspark
+[I 22:13:11.965 NotebookApp] Writing notebook server cookie secret to /home/glue/.local/share/jupyter/runtime/notebook_cookie_secret
+[W 22:13:12.431 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+[I 22:13:12.643 NotebookApp] Serving notebooks from local directory: /home/glue/notebook
+[I 22:13:12.644 NotebookApp] The Jupyter Notebook is running at:
+[I 22:13:12.644 NotebookApp] http://864f6dac7803:8000/?token=3fdf9f5e058a32ef3c1e382424ccb492dc9c641dd00c654a
+[I 22:13:12.644 NotebookApp]  or http://127.0.0.1:8000/?token=3fdf9f5e058a32ef3c1e382424ccb492dc9c641dd00c654a
+[I 22:13:12.644 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 22:13:12.654 NotebookApp] No web browser found: could not locate runnable browser.
+[C 22:13:12.655 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/glue/.local/share/jupyter/runtime/nbserver-19-open.html
+    Or copy and paste one of these URLs:
+        http://864f6dac7803:8000/?token=3fdf9f5e058a32ef3c1e382424ccb492dc9c641dd00c654a
+     or http://127.0.0.1:8000/?token=3fdf9f5e058a32ef3c1e382424ccb492dc9c641dd00c654a
 ```
 
 ### Running on Amazon ECS or EKS
