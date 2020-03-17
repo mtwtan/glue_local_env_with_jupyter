@@ -84,6 +84,20 @@ $ nohup pysparkl &
 
 ### Running on your local Docker Swarm on your desktop or laptop
 
+#### Pre-requisites
+- Have an AWS account with access keys and passwords created in an .aws folder
+- Installed Docker Desktop on your desktop/laptop
+
+#### Steps
+- Clone the repository
+- Build the docker image or download from Docker Hub
+- Run the docker container with the specifications as listed below
+```
+$ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
+$ ls -l   ## Verify that you have the Dockerfile
+$
+```
+
 ### Running on Amazon ECS or EKS
 
 #### Work in progress
