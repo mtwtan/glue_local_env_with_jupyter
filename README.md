@@ -81,3 +81,9 @@ $ nohup pysparkl &
 - Enter the password set above
 
 ## Running on a local Docker Container
+
+### Running on your local Docker Swarm on your desktop or laptop
+
+### Running on Amazon ECS or EKS
+
+#### Work in progress
