@@ -1,22 +1,24 @@
-# Creating a Jupyter Notebook environment for running AWS Glue ETL scripts locally on an AWS EC2 Instance
+# Creating a Jupyter Notebook environment for running AWS Glue ETL scripts locally on an AWS EC2 Instance or on a Docker Container
 A local development environment to run AWS Glue ETL scripts with a Jupyter Notebook server and made available over https.
 
-## Pre-requisites
+## Running on an EC2 Instance
+
+### Pre-requisites
 - This setup assumes that users are using AWS
 - An available VPC with a subnet that is available over the public internet with an Internet Gateway.
 - Have an available and appropriate SSL/TLS cert
 
-## WORK IN PROGRESS
-### CloudFormation template in progress
+### WORK IN PROGRESS
+#### CloudFormation template in progress
 
-## Manual Steps
+### Manual Steps
 
-### Set up IAM Roles
+#### Set up IAM Roles
 - Create an IAM EC2 Role with the following IAM policies:
   - Select AWSGlueServiceNotebookRole 
   - Select or create inline policy to read and write to the appropriate S3 buckets
 
-### Set up Security Groups
+#### Set up Security Groups
 - Create a Security Group for the Application Load Balancer (ALB). The appropriate Source IP range should be appropriate to your environment:
 
 Type | Protocol | Port range | Source
@@ -31,7 +33,7 @@ Type | Protocol | Port range | Source
 HTTP | TCP | 80 | sg-XXXXXXXXXXXXXXXXX 
 SSH | TCP | 22 | X.X.X.X/X
 
-### Launch EC2 instances
+#### Launch EC2 instances
 - Launch M5.large or larger
 - Download this git project to /home/ec2-user
 - Install git and clone repository to $HOME directory
@@ -50,18 +52,18 @@ $ chmod a+x notebook_glue_setup.sh
 $ ./notebook_glue_setup.sh
 ```
 
-### Set up Jupyter Notebook Password
+#### Set up Jupyter Notebook Password
 ```
 $ jupyter notebook password
 ```
-### To start up Jupyter notebook
+#### To start up Jupyter notebook
 ```
 $ cd ~
 $ source .bash_profile
 $ cd ~/aws-glue-libs
 $ nohup pysparkl &
 ```
-### Set up Target Group and Application Load Balancer (ALB)
+#### Set up Target Group and Application Load Balancer (ALB)
 - Create a target group and register the above instance with the target group on port 80
 - Create an ALB and add the following listener:
   - HTTPS (443) listener
@@ -71,10 +73,11 @@ $ nohup pysparkl &
   - Select the target group created above
   - Register the targets
 
-### Create appropriate DNS (Optional)
+#### Create appropriate DNS (Optional)
 - If preferred, create a DNS entry that points to the ALB DNS as a CNAME or Alias.
 
-### Go to a Jupyter notebook
+#### Go to a Jupyter notebook
 - Go to the URL for the ALB or alias
 - Enter the password set above
 
+## Running on a local Docker Container
