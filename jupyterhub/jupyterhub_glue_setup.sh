@@ -9,6 +9,7 @@ echo Script name: $0
 echo $# arguments 
 if [$# -ne 4]; 
     then echo "Please make sure you provide 4 parameters: 2 DNS server IPs, ldap bind user, bind user password"
+    exit 1
 fi
 dns1=${1}
 dns2=${2}
