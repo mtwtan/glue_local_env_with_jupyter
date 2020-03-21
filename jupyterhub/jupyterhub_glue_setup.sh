@@ -5,11 +5,10 @@
 # Make sure that git is installed
 ########################
 
-echo Script name: $0
 echo $# arguments 
-if [$# -lte 4]; then
+if [ "$#" -lt 4 ]; then
     echo "Please make sure you provide 4 parameters: 2 DNS server IPs, ldap bind user, bind user password";
-    exit
+    return 1
 fi
 dns1=${1}
 dns2=${2}
