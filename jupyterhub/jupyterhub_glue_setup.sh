@@ -152,7 +152,7 @@ sudo cp $gitclonedir/glue_local_env_with_jupyter/kernel.json /opt/jupyterhub/sha
 
 # Create Jupyter Hub systemd service
 
-sudo cp $gitclonedir/glue_local_env_with_jupyter/jupyterhub.service /etc/systemd/system/jupyterhub.service
+sudo cp $gitclonedir/glue_local_env_with_jupyter/jupyterhub/jupyterhub.service /etc/systemd/system/jupyterhub.service
 sudo systemctl daemon-reload
 sudo systemctl enable jupyterhub.service
 sudo systemctl start jupyterhub.service
