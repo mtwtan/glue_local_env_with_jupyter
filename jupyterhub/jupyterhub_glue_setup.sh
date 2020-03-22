@@ -5,6 +5,7 @@
 # Make sure that git is installed
 ########################
 
+cd $HOME
 echo $# arguments 
 if [ "$#" -lt 4 ]; then
     echo "Please make sure you provide 4 parameters: 2 DNS server IPs, ldap bind user, bind user password";
