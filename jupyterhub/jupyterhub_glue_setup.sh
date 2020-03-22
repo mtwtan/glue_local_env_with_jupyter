@@ -157,8 +157,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable jupyterhub.service
 sudo systemctl start jupyterhub.service
 
-sudo jupyter serverextension enable --py githubcommit
-sudo jupyter nbextension install --py githubcommit --user
-sudo jupyter nbextension enable --py githubcommit
+sudo /opt/jupyterhub/bin/jupyter serverextension enable --py githubcommit
+sudo /opt/jupyterhub/bin/jupyter nbextension install --py githubcommit
+sudo /opt/jupyterhub/bin/jupyter nbextension enable --py githubcommit
 
 sudo reboot now
