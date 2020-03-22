@@ -8,12 +8,13 @@
 echo $# arguments 
 if [ "$#" -lt 4 ]; then
     echo "Please make sure you provide 4 parameters: 2 DNS server IPs, ldap bind user, bind user password";
-    exit 1
+    return 1
 fi
 dns1=${1}
 dns2=${2}
 ldapbinduser=${3}
 ldapbinduserpw=${4}
+gitclonedir=$(pwd)
 
 sudo sh -c 'echo "supersede domain-name-servers ${dns1}, ${dns2};" >> /etc/dhcp/dhclient.conf'
 
@@ -23,10 +24,11 @@ sudo amazon-linux-extras install nginx1.12 -y
 
 # Set python3 as default python language
 echo "alias python=python3" >> $HOME/.bash_profile
+sudo sh -c 'echo "alias python=python3" >> /root/.bash_profile'
 source $HOME/.bash_profile
 
 # Install nodejs and nvm
-cd $HOME
+cd gitclonedir
 sudo yum install -y gcc-c++ make
 curl -sL https://rpm.nodesource.com/setup_13.x | sudo -E bash -
 sudo yum -y install nodejs nodejs-devel
@@ -93,14 +95,17 @@ sudo tar -xvf spark-2.4.3-bin-hadoop2.8.tgz
 
 # Backup original $HOME/.bash_profile
 cp $HOME/.bash_profile $HOME/.bash_profile_bak
+sudo sh -c 'cp /root/.bash_profile /root/.bash_profile_bak'
 
 #### Configure $HOME/.bash_profile to set the appropriate environmental variables
 
 # Add maven to PATH
 echo "export PATH=\$PATH:/opt/apache-maven-3.6.0/bin" >> $HOME/.bash_profile
+sudo sh -c 'echo "export PATH=\$PATH:/opt/apache-maven-3.6.0/bin" >> /root/.bash_profile'
 
 # Set SPARK_HOME
 echo "export SPARK_HOME=/opt/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8" >> $HOME/.bash_profile
+sudo sh -c 'echo "export SPARK_HOME=/opt/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8" >> /root/.bash_profile'
 
 ## Get the new env variables
 source $HOME/.bash_profile
@@ -111,7 +116,7 @@ java=$(alternatives --display java | grep link | sed 's/^ link.*to //')
 java2=$(echo $java | sed 's/link currently points to //')
 jvmhome=$(echo $java2 | sed 's/\/bin\/java//')
 echo "export JAVA_HOME=$jvmhome" >> $HOME/.bash_profile
-
+sudo sh -c 'export JAVA_HOME=$jvmhome" >> /root/.bash_profile'
 ## Get the new env variables
 source $HOME/.bash_profile
 
@@ -142,11 +147,11 @@ sudo rm -f /opt/aws-glue-libs/jarsv1/javax.servlet-3.0.0.v201112011016.jar
 
 # Create Glue PySpark kernel
 sudo mkdir -p /opt/jupyterhub/share/jupyter/kernels/gluepyspark
-sudo cp $HOME/glue_local_env_with_jupyter/kernel.json /opt/jupyterhub/share/jupyter/kernels/gluepyspark
+sudo cp $gitclonedir/glue_local_env_with_jupyter/kernel.json /opt/jupyterhub/share/jupyter/kernels/gluepyspark
 
 # Create Jupyter Hub systemd service
 
-sudo cp $HOME/glue_local_env_with_jupyter/jupyterhub.service /etc/systemd/system/jupyterhub.service
+sudo cp $gitclonedir/glue_local_env_with_jupyter/jupyterhub.service /etc/systemd/system/jupyterhub.service
 sudo systemctl daemon-reload
 sudo systemctl enable jupyterhub.service
 sudo systemctl start jupyterhub.service
