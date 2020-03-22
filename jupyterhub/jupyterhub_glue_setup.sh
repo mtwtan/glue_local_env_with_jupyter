@@ -15,7 +15,7 @@ dns1=${1}
 dns2=${2}
 ldapbinduser=${3}
 ldapbinduserpw=${4}
-gitclonedir=$(pwd)
+gitclonedir="/home/ec2-user"
 
 sudo sh -c 'echo "supersede domain-name-servers ${dns1}, ${dns2};" >> /etc/dhcp/dhclient.conf'
 
