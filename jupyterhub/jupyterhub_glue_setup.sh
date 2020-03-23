@@ -17,7 +17,7 @@ ldapbinduser=${3}
 ldapbinduserpw=${4}
 gitclonedir="/home/ec2-user"
 
-sudo sh -c 'echo "supersede domain-name-servers ${dns1}, ${dns2};" >> /etc/dhcp/dhclient.conf'
+sudo sh -c "echo \"supersede domain-name-servers ${dns1}, ${dns2};\" >> /etc/dhcp/dhclient.conf"
 
 # Install packages
 sudo yum -y install java-1.8.0-openjdk.x86_64 java-1.8.0-openjdk-devel git gcc python3 python3-devel
