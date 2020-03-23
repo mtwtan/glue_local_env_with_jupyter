@@ -1,21 +1,21 @@
 # AWS Config
 
 variable "aws_region" {
-  default = "us-east-2"
+  default = "<region>"
 }
 
 variable "aws_key_name" {
-  default = "aws-matt-ohio-east-2"
+  default = "<AWS Key Name>"
 }
 
 variable "subnet_id" {
-  default = "subnet-00b47873fd7d8e7c1"
+  default = "subnet-xxxxxxxxxxxxxxxxx"
 }
 
 variable "vpc_security_group_ids" {
-  default = [ "sg-0d83c380bf4a97c78" ]
+  default = [ "sg-xxxxxxxxxxxxxxxxx" ]
 }
 
 variable "iam_instance_profile" {
-  default = "SparkStandAlone"
+  default = "<Instance Profile Name>"
 }
