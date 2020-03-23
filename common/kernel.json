@@ -1,0 +1,17 @@
+{
+ "argv": [
+  "python",
+  "-m",
+  "ipykernel_launcher",
+  "-f",
+  "{connection_file}"
+ ],
+ "display_name": "Glue PySpark",
+ "language": "python",
+ "env": {
+   "SPARK_HOME": "/opt/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8",
+   "SPARK_CONF_DIR": "/opt/aws-glue-libs/conf",
+   "PYTHONPATH": "/opt/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8/python/:/opt/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8/python/lib/py4j-0.10.7-src.zip:/opt/aws-glue-libs/PyGlue.zip:/opt/aws-glue-libs/awsglue",
+   "PYSPARK_PYTHON": "python3"
+ }
+}
