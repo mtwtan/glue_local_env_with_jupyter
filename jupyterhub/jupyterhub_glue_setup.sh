@@ -70,9 +70,7 @@ sudo sh -c 'echo "c.LDAPAuthenticator.lookup_dn_search_filter = \"({login_attr}=
 sudo sh -c "echo \"c.LDAPAuthenticator.lookup_dn_search_user = '${ldapbinduser}'\" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py"
 sudo sh -c "echo \"c.LDAPAuthenticator.lookup_dn_search_password = '${ldapbinduserpw}'\" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py"
 sudo sh -c 'echo "c.LDAPAuthenticator.use_lookup_dn_username = False" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
-## *** Modify below as necessary ***
-sudo sh -c 'echo "c.LDAPAuthenticator.user_search_base = \"ou=users,dc=example,dc=com\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
-## *** Modify above as necessary ***
+sudo sh -c 'echo "c.LDAPAuthenticator.user_search_base = \"ou=users,ou=tanmatth-aws,dc=tanmatth-aws,dc=com\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
 sudo sh -c 'echo "c.LDAPAuthenticator.user_attribute = \"sAMAccountName\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
 sudo sh -c 'echo "c.LDAPAuthenticator.lookup_dn_user_dn_attribute = \"cn\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
 sudo sh -c 'echo "c.LDAPAuthenticator.escape_userdn = False" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
@@ -162,5 +160,10 @@ sudo systemctl start jupyterhub.service
 sudo /opt/jupyterhub/bin/jupyter serverextension enable --py githubcommit
 sudo /opt/jupyterhub/bin/jupyter nbextension install --py githubcommit
 sudo /opt/jupyterhub/bin/jupyter nbextension enable --py githubcommit
+
+# Modify NGINX configuration
+sudo sh -c 'mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig'
+sudo sh -c 'cp cp /home/ec2-user/glue_local_env_with_jupyter/nginx.conf /etc/nginx/nginx.conf'
+sudo sh -c 'cp /home/ec2-user/glue_local_env_with_jupyter/jupyterhub/jupyterhub.conf /etc/nginx/conf.d/jupyterhub.conf'
 
 sudo reboot now
