@@ -7,14 +7,15 @@
 
 cd $HOME
 echo $# arguments 
-if [ "$#" -lt 4 ]; then
-    echo "Please make sure you provide 4 parameters: 2 DNS server IPs, ldap bind user, bind user password";
+if [ "$#" -lt 5 ]; then
+    echo "Please make sure you provide 5 parameters: 2 DNS server IPs, ldap bind user, bind user password";
     exit 1
 fi
 dns1=${1}
 dns2=${2}
 ldapbinduser=${3}
 ldapbinduserpw=${4}
+ldapou=${5}
 gitclonedir="/home/ec2-user"
 
 sudo sh -c "echo \"supersede domain-name-servers ${dns1}, ${dns2};\" >> /etc/dhcp/dhclient.conf"
@@ -70,7 +71,7 @@ sudo sh -c 'echo "c.LDAPAuthenticator.lookup_dn_search_filter = \"({login_attr}=
 sudo sh -c "echo \"c.LDAPAuthenticator.lookup_dn_search_user = '${ldapbinduser}'\" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py"
 sudo sh -c "echo \"c.LDAPAuthenticator.lookup_dn_search_password = '${ldapbinduserpw}'\" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py"
 sudo sh -c 'echo "c.LDAPAuthenticator.use_lookup_dn_username = False" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
-sudo sh -c 'echo "c.LDAPAuthenticator.user_search_base = \"ou=users,ou=tanmatth-aws,dc=tanmatth-aws,dc=com\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
+sudo sh -c "echo \"c.LDAPAuthenticator.user_search_base = '${ldapou}'\" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py"
 sudo sh -c 'echo "c.LDAPAuthenticator.user_attribute = \"sAMAccountName\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
 sudo sh -c 'echo "c.LDAPAuthenticator.lookup_dn_user_dn_attribute = \"cn\"" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
 sudo sh -c 'echo "c.LDAPAuthenticator.escape_userdn = False" >> /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py'
