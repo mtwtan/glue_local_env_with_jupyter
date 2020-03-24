@@ -9,6 +9,7 @@ A local development environment to run AWS Glue ETL scripts with a JupyterHub se
 - Have an available and appropriate SSL/TLS cert
 - Assumes you are running Active Directory on AWS and all network routing and firewall settings are configured to allow network traffic routing to the Active Directory IP addresses
 - Assumes that you have the user accounts set up on Active Directory and that the following has been set up:
+  - OU of the AD where the user will be searched. Example: ou=users,dc=example,dc=com
   - Username and password of a user that has been delegated to search the directory and be able to authenticate user
   - The Active Directory has been set up also as a DNS server that can forward DNS queries to the other DNS servers on the Internet -- The AD DNS servers will replace the DNS entries in the DHCP settings of the EC2 instance.
 
@@ -29,7 +30,7 @@ Type | Protocol | Port range | Source
 ---- | -------- | ---------- | ------ 
 HTTPS | TCP | 443 | X.X.X.X/X
 
-  - Copy the Security Group ID: sg-XXXXXXXXXXXXXXXXX 
+- Copy the Security Group ID: sg-XXXXXXXXXXXXXXXXX 
 - Create a Security Group for the EC2 instance
 
 Type | Protocol | Port range | Source
@@ -48,12 +49,15 @@ $ cd /home/ec2-user
 $ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
 ```
 
-- Run jupyterhub_glue_setup.sh
+- Run jupyterhub_glue_setup.sh <DNS1> <DNS2> <ldapuser> <ldapuser password>
+  - DNS1: IP address of one of the Active Directory (AD) servers
+  - DNS2: IP address of the second AD server
 
 ```
 $ cd glue_local_env_with_jupyter/jupyterhub
 $ sudo -c 'bash jupyterhub_glue_setup.sh'
 ```
+*The EC2 instance will reboot at the end of the installation to allow the DHCP to pick up the new DNS servers*
 
 #### Set up Jupyter Notebook Password
 ```
