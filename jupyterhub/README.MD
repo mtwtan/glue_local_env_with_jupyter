@@ -12,6 +12,11 @@ A local development environment to run AWS Glue ETL scripts with a JupyterHub se
   - OU of the AD where the user will be searched. Example: ou=users,dc=example,dc=com
   - Username and password of a user that has been delegated to search the directory and be able to authenticate user
   - The Active Directory has been set up also as a DNS server that can forward DNS queries to the other DNS servers on the Internet -- The AD DNS servers will replace the DNS entries in the DHCP settings of the EC2 instance.
+- IMPORTANT
+  - JupyterHub will not create a user and a home directory on the EC2 instance. It is necessary to create a user on the instance that is the same username as in the Active Directory. Run this each time a new user is allowed to use JupyterHub.
+```
+sudo useradd <username>
+```
 
 ### WORK IN PROGRESS
 #### CloudFormation template in progress
