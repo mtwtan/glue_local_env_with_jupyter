@@ -49,9 +49,10 @@ $ cd /home/ec2-user
 $ git clone https://github.com/mtwtan/glue_local_env_with_jupyter.git
 ```
 
-- Run jupyterhub_glue_setup.sh <DNS1> <DNS2> <ldapuser> <ldapuser password>
+- Run jupyterhub_glue_setup.sh <DNS1> <DNS2> <ldapuser> <ldapuser password> <ou>
   - DNS1: IP address of one of the Active Directory (AD) servers
   - DNS2: IP address of the second AD server
+  - ldapuser: Username 
 
 ```
 $ cd glue_local_env_with_jupyter/jupyterhub
@@ -59,16 +60,15 @@ $ sudo -c 'bash jupyterhub_glue_setup.sh'
 ```
 *The EC2 instance will reboot at the end of the installation to allow the DHCP to pick up the new DNS servers*
 
-#### Set up Jupyter Notebook Password
+#### To enable and start and stop the NGINX reverse proxy
 ```
-$ jupyter notebook password
+$ sudo systemctl enable nginx.service
+$ sudo systemctl start|stop nginx.service
 ```
-#### To start up Jupyter notebook
+#### To enable and start and stop the JupyterHub service
 ```
-$ cd ~
-$ source .bash_profile
-$ cd ~/aws-glue-libs
-$ nohup pysparkl &
+$ sudo systemctl enable jupyterhub.service
+$ sudo systemctl start|stop jupyterhub.service
 ```
 #### Set up Target Group and Application Load Balancer (ALB)
 - Create a target group and register the above instance with the target group on port 80
@@ -83,9 +83,8 @@ $ nohup pysparkl &
 #### Create appropriate DNS (Optional)
 - If preferred, create a DNS entry that points to the ALB DNS as a CNAME or Alias.
 
-#### Go to a Jupyter notebook
+#### Go to JupyterHub
 - Go to the URL for the ALB or alias
-- Enter the password set above
 
 ## Running on a local Docker Container
 
