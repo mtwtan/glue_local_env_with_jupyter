@@ -166,5 +166,6 @@ sudo /opt/jupyterhub/bin/jupyter nbextension enable --py githubcommit
 sudo sh -c 'mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig'
 sudo sh -c 'cp cp /home/ec2-user/glue_local_env_with_jupyter/nginx.conf /etc/nginx/nginx.conf'
 sudo sh -c 'cp /home/ec2-user/glue_local_env_with_jupyter/jupyterhub/jupyterhub.conf /etc/nginx/conf.d/jupyterhub.conf'
+sudo sh -c 'systemctl enable jupyterhub.service'
 
 sudo reboot now
