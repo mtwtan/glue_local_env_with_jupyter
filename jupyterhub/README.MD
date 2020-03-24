@@ -88,6 +88,7 @@ $ sudo systemctl start|stop jupyterhub.service
 
 ## Running on a local Docker Container
 
+<!--
 ### Running on your local Docker Swarm on your desktop or laptop
 
 #### Pre-requisites
@@ -141,7 +142,7 @@ $ docker run -v ~/glue/.aws:/home/glue/.aws -v ~/glue_notebooks:/home/glue/noteb
         http://864f6dac7803:8000/?token=3fdf9f5e058a32ef3c1e382424ccb492dc9c641dd00c654a
      or http://127.0.0.1:8000/?token=3fdf9f5e058a32ef3c1e382424ccb492dc9c641dd00c654a
 ```
-
+-->
 ### Running on Amazon ECS or EKS
 
 #### Work in progress
