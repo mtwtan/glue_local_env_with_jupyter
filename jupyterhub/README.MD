@@ -88,6 +88,7 @@ $ sudo systemctl start|stop jupyterhub.service
 
 ## Running on a local Docker Container
 
+### WORK IN PROGRESS
 <!--
 ### Running on your local Docker Swarm on your desktop or laptop
 
