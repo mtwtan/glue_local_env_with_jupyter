@@ -90,7 +90,7 @@ echo "c.NotebookApp.port = 8000" >> $HOME/.jupyter/jupyter_notebook_config.py
 # Modify NGINX configuration
 sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 sudo cp ~/glue_local_env_with_jupyter/common/nginx.conf /etc/nginx/nginx.conf
-sudo cp ~/glue_local_env_with_jupyter/common/notebook.conf /etc/nginx/conf.d/notebook.conf
+sudo cp ~/glue_local_env_with_jupyter/jupyter_notebook/notebook.conf /etc/nginx/conf.d/notebook.conf
 sudo systemctl enable nginx.service
 sudo systemctl start nginx.service
 
