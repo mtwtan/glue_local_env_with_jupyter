@@ -17,4 +17,4 @@ $ aws s3 cp kernel.json s3://<bucket name>/<folder name>/
 $ aws s3 cp nginx.conf s3://<bucket name>/<folder name>/
 ```
 
-![AD IP address](../images/ad-directory.png)
+![AD IP address](../images/ad-directory-1.png)
