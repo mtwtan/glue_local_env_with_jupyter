@@ -42,5 +42,38 @@ Downloading from aws-glue-etl-artifacts: https://aws-glue-etl-artifacts.s3.amazo
 Downloading from central: https://repo.maven.apache.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.pom
 
 ```
+```
+[INFO] Copying hk2-locator-2.4.0-b34.jar to /opt/aws-glue-libs/jarsv1/hk2-locator-2.4.0-b34.jar
+[INFO] Copying guice-servlet-3.0.jar to /opt/aws-glue-libs/jarsv1/guice-servlet-3.0.jar
+[INFO] Copying jackson-dataformat-msgpack-0.7.0.jar to /opt/aws-glue-libs/jarsv1/jackson-dataformat-msgpack-0.7.0.jar
+[INFO] Copying ion-java-1.0.2.jar to /opt/aws-glue-libs/jarsv1/ion-java-1.0.2.jar
+[INFO] Copying aws-java-sdk-autoscaling-1.11.528.jar to /opt/aws-glue-libs/jarsv1/aws-java-sdk-autoscaling-1.11.528.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  08:18 min
+[INFO] Finished at: 2020-03-29T19:56:33Z
+[INFO] ------------------------------------------------------------------------
+rm: cannot remove '/opt/aws-glue-libs/conf/spark-defaults.conf': No such file or directory
+/opt/aws-glue-libs
+Created symlink from /etc/systemd/system/multi-user.target.wants/jupyterhub.service to /etc/systemd/system/jupyterhub.service.
+Enabling: githubcommit
+- Writing config: /root/.jupyter
+    - Validating...
+      githubcommit  OK
+Installing /opt/jupyterhub/lib64/python3.7/site-packages/githubcommit/static -> githubcommit
+Making directory: /usr/local/share/jupyter/nbextensions/githubcommit/
+Copying: /opt/jupyterhub/lib64/python3.7/site-packages/githubcommit/static/main.js -> /usr/local/share/jupyter/nbextensions/githubcommit/main.js
+- Validating: OK
 
+    To initialize this nbextension in the browser every time the notebook (or other app) loads:
+    
+          jupyter nbextension enable githubcommit --py
+    
+Enabling notebook extension githubcommit/main...
+      - Validating: OK
+Created symlink from /etc/systemd/system/multi-user.target.wants/nginx.service to /usr/lib/systemd/system/nginx.service.
+Connection to ec2-54-149-102-167.us-west-2.compute.amazonaws.com closed by remote host.
+Connection to ec2-54-149-102-167.us-west-2.compute.amazonaws.com closed.
+```
 
