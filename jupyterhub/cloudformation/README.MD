@@ -18,3 +18,12 @@ $ aws s3 cp nginx.conf s3://<bucket name>/<folder name>/
 ```
 
 ![AD IP address](../images/ad-directory-1.png)
+
+
+![CF-ec-1](../images/ec2-cf-1.png)
+![CF-ec-2](../images/ec2-cf-2.png)
+![CF-ec-3](../images/ec2-cf-3.png)
+
+
+
+
