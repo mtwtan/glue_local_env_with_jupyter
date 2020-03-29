@@ -79,11 +79,11 @@ Parameters:
     Type: String
     Description: Domain name of the Active Directory servers, e.g. "jupygluespark.com"
     Default: 'jupygluespark.com'
-  LdapBineUser:
+  LdapBindUser:
     Description: LDAP Bind user to search Active Directory
     Type: String
     Default: 'ldapsearch'
-  LdapBineUserPassword:
+  LdapBindUserPassword:
     Description: LDAP Bind user password
     Type: String
     NoEcho: true
@@ -156,13 +156,13 @@ Resources:
             #!/bin/bash -xe
             #dns1='${Dns1}'
             #dns2='${Dns2}'
-            #ldapbinduser='${LdapBineUser}'
-            #ldapbinduserpw='${LdapBineUserPassword}'
+            #ldapbinduser='${LdapBindUser}'
+            #ldapbinduserpw='${LdapBindUserPassword}'
             #ldapou=${LdapOu}
             s3files="${S3ScriptLocation}/"
             cd ${S3DownloadLocation}
             aws s3 cp --recursive $s3files .
-            bash jupyterhub_glue_setup.sh ${Dns1} ${Dns2} ${AdDomain} ${LdapBineUser} ${LdapBineUserPassword} ${LdapOu} ${S3DownloadLocation}
+            bash jupyterhub_glue_setup.sh ${Dns1} ${Dns2} ${AdDomain} ${LdapBindUser} ${LdapBindUserPassword} ${LdapOu} ${S3DownloadLocation}
 
   PublicAlbTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
