@@ -30,5 +30,17 @@ $ aws s3 cp nginx.conf s3://<bucket name>/<folder name>/
 ![CF-ec-3](../images/ec2-cf-3.png)
 
 
+### Checking to see when the userdata script is completed
+
+```
+$ cd /var/log
+$ tail -f cloud-init-output.log 
+Downloading from aws-glue-etl-artifacts: https://aws-glue-etl-artifacts.s3.amazonaws.com/release/org/apache/hadoop/hadoop-annotations/2.6.5/hadoop-annotations-2.6.5.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/hadoop/hadoop-annotations/2.6.5/hadoop-annotations-2.6.5.pom
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/hadoop/hadoop-annotations/2.6.5/hadoop-annotations-2.6.5.pom (2.4 kB at 114 kB/s)
+Downloading from aws-glue-etl-artifacts: https://aws-glue-etl-artifacts.s3.amazonaws.com/release/com/google/guava/guava/11.0.2/guava-11.0.2.pom
+Downloading from central: https://repo.maven.apache.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.pom
+
+```
 
 
