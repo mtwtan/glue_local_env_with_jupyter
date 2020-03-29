@@ -15,6 +15,4 @@ $ aws s3 cp jupyterhub.conf s3://<bucket name>/<folder name>/
 $ aws s3 cp jupyterhub.service s3://<bucket name>/<folder name>/
 $ aws s3 cp kernel.json s3://<bucket name>/<folder name>/
 $ aws s3 cp nginx.conf s3://<bucket name>/<folder name>/
-
-
 ```
