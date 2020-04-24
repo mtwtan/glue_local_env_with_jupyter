@@ -1,0 +1,267 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata:
+  License: Apache-2.0
+Description: 'AWS CloudFormation Sample Template EC2InstanceWithSecurityGroupSample:
+  Create an Amazon EC2 instance running the Amazon Linux AMI. The AMI is chosen based
+  on the region in which the stack is run. This example creates an EC2 security group
+  for the instance to give you SSH access. **WARNING** This template creates an Amazon
+  EC2 instance. You will be billed for the AWS resources used if you create a stack
+  from this template.'
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  BastionInstanceType:
+    Description: Bastion EC2 Instance Type
+    Type: String
+    Default: t2.micro
+    AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium]
+    ConstraintDescription: must be a valid EC2 instance type.
+  InstanceType:
+    Description: JupyterHub EC2 instance type
+    Type: String
+    Default: m5.large
+    AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium, t2.large, t2.xlarge, t2.2xlarge,
+      t3.nano, t3.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge,
+      m4.large, m4.xlarge, m4.2xlarge, m4.4xlarge, m4.10xlarge,
+      m5.large, m5.xlarge, m5.2xlarge, m5.4xlarge,
+      c5.large, c5.xlarge, c5.2xlarge, c5.4xlarge, c5.9xlarge,
+      g3.8xlarge,
+      r5.large, r5.xlarge, r5.2xlarge, r5.4xlarge, r3.12xlarge,
+      i3.xlarge, i3.2xlarge, i3.4xlarge, i3.8xlarge,
+      d2.xlarge, d2.2xlarge, d2.4xlarge, d2.8xlarge]
+    ConstraintDescription: must be a valid EC2 instance type.
+  LatestAmiId:
+    Type:  'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  IamRole:
+    Type: 'String'
+    Description: "Please provide the IAM Role for the JupyterHub EC2 Instance"
+  VPCID:
+    Description: The VPC the directory will be created in
+    Type: AWS::EC2::VPC::Id
+  PublicSubnet0:
+    Description: Subnet to be used for the Bastion Host EC2 Instance and ALB
+    Type: AWS::EC2::Subnet::Id
+  PublicSubnet1:
+    Description: Additional subnet to be used for the ALB
+    Type: AWS::EC2::Subnet::Id
+  PrivateSubnet0:
+    Description: Subnet to be used for the JupyterHub EC2 Instance
+    Type: AWS::EC2::Subnet::Id
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the Bastion EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  ALBAccessCidr:
+    Description: The IP address range that can be used to access JupyterHub over HTTPS
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  RootVolumeSize:
+    Description: The size of the Root Volume Size of the JupyterHub EC2 Instance
+    Type: String
+    Default: 100
+  PublicAlbAcmCertificate:
+    AllowedPattern: ^$|(arn:aws:acm:)([a-z0-9/:-])*([a-z0-9])$
+    Description: 'The AWS Certification Manager certificate ARN for the ALB certificate - this certificate should be created in the region you wish to run the ALB and must reference the domain name you use below.'
+    Type: String
+  Dns1:
+    Type: String
+    Description: IP Address of the first Active Directory server. This must be a valid IP address
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})
+    ConstraintDescription: must be a valid IP address of the form x.x.x.x.
+  Dns2:
+    Type: String
+    Description: IP Address of the second Active Directory server. This must be a valid IP address
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})
+    ConstraintDescription: must be a valid IP address of the form x.x.x.x.
+  AdDomain:
+    Type: String
+    Description: Domain name of the Active Directory servers, e.g. "jupygluespark.com"
+    Default: 'jupygluespark.com'
+  LdapBindUser:
+    Description: LDAP Bind user to search Active Directory
+    Type: String
+    Default: 'ldapsearch'
+  LdapBindUserPassword:
+    Description: LDAP Bind user password
+    Type: String
+    NoEcho: true
+    Default: 'P@ssw0rd'
+  LdapOu:
+    Description: 'LDAP location of the user search base, e.g. ou=users,ou=jupygluespark,dc=jupygluespark,dc=com'
+    Type: String
+  S3ScriptLocation:
+    Description: "S3 location of JupyterHub install script and configuration files in the form of s3://<bucket name>/<folder> *** Please omit final trailing / ***"
+    Type: String
+  S3DownloadLocation:
+    Description: "Local Download location of S3 files"
+    Type: String
+    Default: '/tmp'
+
+Resources:
+
+  AlbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable https to ALB 
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: !Ref ALBAccessCidr
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: !Ref ALBAccessCidr
+      VpcId: !Ref VPCID
+
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22 on the instance
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !Ref SSHLocation
+      VpcId: !Ref VPCID
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22 and allow ALB to connect to port 80 on the instance
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !Ref SSHLocation
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        SourceSecurityGroupId: !GetAtt AlbSecurityGroup.GroupId
+      VpcId: !Ref VPCID
+
+  BastionInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref BastionInstanceType
+      SecurityGroupIds: [!Ref BastionSecurityGroup]
+      KeyName: !Ref KeyName
+      ImageId: !Ref LatestAmiId
+      SubnetId: !Ref PublicSubnet0
+      BlockDeviceMappings:
+        -
+          DeviceName: "/dev/xvda"
+          Ebs:
+            VolumeSize: 10
+            VolumeType: gp2
+      Tags:
+        -
+          Key: Name
+          Value: 'Bastion Host'
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      SecurityGroupIds: [!Ref InstanceSecurityGroup]
+      KeyName: !Ref KeyName
+      ImageId: !Ref LatestAmiId
+      SubnetId: !Ref PrivateSubnet0
+      IamInstanceProfile: !Ref IamRole
+      BlockDeviceMappings:
+        -
+          DeviceName: "/dev/xvda"
+          Ebs:
+            VolumeSize: !Ref RootVolumeSize
+            VolumeType: gp2
+      Tags:
+        -
+          Key: Name
+          Value: 'Jupyter Hub EC2 Machine'
+      UserData:
+        Fn::Base64: 
+          !Sub | 
+            #!/bin/bash -xe
+            #dns1='${Dns1}'
+            #dns2='${Dns2}'
+            #ldapbinduser='${LdapBindUser}'
+            #ldapbinduserpw='${LdapBindUserPassword}'
+            #ldapou=${LdapOu}
+            s3files="${S3ScriptLocation}/"
+            cd ${S3DownloadLocation}
+            aws s3 cp --recursive $s3files .
+            bash jupyterhub_glue_setup.sh ${Dns1} ${Dns2} ${AdDomain} ${LdapBindUser} ${LdapBindUserPassword} ${LdapOu} ${S3DownloadLocation}
+
+  PublicAlbTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: "EC2Instance"
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckTimeoutSeconds: 5
+      Name: 'JupyterHubPublicAlb'
+      Port: 80
+      Protocol: HTTP
+      Tags:
+      - Key: Name
+        Value: !Join [ '', [ 'Public ALB / ', !Ref 'AWS::StackName' ] ]
+      TargetType: instance
+      Targets:
+      - Id: !Ref EC2Instance
+      UnhealthyThresholdCount: 5
+      VpcId: !Ref VPCID
+
+  PublicApplicationLoadBalancer: 
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Subnets:
+          [ !Ref PublicSubnet0, !Ref PublicSubnet1 ]
+      LoadBalancerAttributes:
+      - Key: idle_timeout.timeout_seconds
+        Value: 60
+      SecurityGroups:
+      - !Ref AlbSecurityGroup
+      Tags:
+      - Key: Name
+        Value: !Join [ '', [ 'Public ALB / ', !Ref 'AWS::StackName' ] ]
+  
+  PublicAlbListenerHttpRedirect:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: redirect
+        RedirectConfig:
+          Host: "#{host}"
+          Path: "/#{path}"
+          Port: 443
+          Protocol: "HTTPS"
+          Query: "#{query}"
+          StatusCode: HTTP_301
+      LoadBalancerArn: !Ref PublicApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+  PublicAlbListenerSslCertificate:
+    Type : AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+      - CertificateArn: !Ref PublicAlbAcmCertificate
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref PublicAlbTargetGroup
+      LoadBalancerArn: !Ref PublicApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+
