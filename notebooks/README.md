@@ -208,7 +208,7 @@ l_history.printSchema()
 ```python
 glueContext.write_dynamic_frame.from_options(frame = l_history,
           connection_type = "s3",
-          connection_options = {"path": "s3://tanmatth-blogs/blog-jupyter/glue_output/legislator_history"},
+          connection_options = {"path": "s3://< S3 buckets >/blog-jupyter/glue_output/legislator_history"},
           format = "parquet")
 ```
 
