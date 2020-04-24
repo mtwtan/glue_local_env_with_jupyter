@@ -143,6 +143,47 @@ Resources:
           Value: Private
       VpcId: !Ref Vpc
 
+  NatEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc 
+  
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn: AttachInternetGateway
+    Properties:
+      AllocationId: !GetAtt NatEIP.AllocationId
+      SubnetId: !Ref PublicSubnet0
+
+  NatRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties: 
+      VpcId: !Ref Vpc 
+      Tags:
+        - Key: Name 
+          Value: !Join [ '', [ 'NatRouteTable / ', !Ref 'AWS::StackName' ] ]
+        - Key: Network
+          Value: Public
+
+  NatRoute:
+    Type: AWS::EC2::Route 
+    Properties:
+      RouteTableId: !Ref NatRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  PrivateRouteTableAssociation0:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet0
+      RouteTableId: !Ref NatRouteTable
+  
+  PrivateRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref NatRouteTable
+
 Outputs:
   
   Vpc:
@@ -157,3 +198,11 @@ Outputs:
     Value: !Ref PublicSubnetCidr1
   PublicSubnet1:
     Value: !Ref PublicSubnet1
+  PrivateSubnetCidr0:
+    Value: !Ref PrivateSubnetCidr0
+  PrivateSubnet0:
+    Value: !Ref PrivateSubnet0
+  PrivateSubnetCidr1:
+    Value: !Ref PrivateSubnetCidr0
+  PrivateSubnet1:
+    Value: !Ref PrivateSubnet0
