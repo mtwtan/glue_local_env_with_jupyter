@@ -1,3 +1,11 @@
+# PySpark ETL scripts that can be run to validate the setup
+
+## Pre-requisites
+- Appropriate IAM permissions need to be given to the user running the script.
+- The user credentials and configuration will be in the .aws folder in the user home directory
+
+## The script and the results of each snippet is below:
+
 ```python
 import sys
 from awsglue.transforms import *
